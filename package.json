@@ -1,0 +1,27 @@
+{
+  "name": "@aserto/ts-authorizer",
+  "version": "0.0.1",
+  "description": "Aserto Authorizer TypeScript type definitions.",
+  "types": "index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "generated/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aserto-dev/ts-authorizer.git"
+  },
+  "author": "Aserto",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/aserto-dev/ts-authorizer#readme",
+  "dependencies": {
+    "typescript": "^4.4.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.5",
+    "openapi-typescript": "^4.4.0",
+    "tslib": "^2.3.1",
+    "rollup": "^2.14.0"
+  },
+  "private": false
+}
