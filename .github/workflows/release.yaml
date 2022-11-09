@@ -25,4 +25,4 @@ jobs:
 
       - run: npm install -g yarn
       - run: yarn install --frozen-lockfile
-      - run: yarn publish
+      - run: yarn publish --access public
