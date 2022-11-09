@@ -2,7 +2,13 @@
 Automated generation of Aserto Authorizer TypeScript type definitions.
 
 ## Consuming the definitions
-These definitions can be consumed by `yarn` directly from `git` using the following reference:
+These definitions can be consumed by `yarn` from npm:
+```
+"devDependencies": {
+    "@aserto/ts-authorizer": "^v0.0.1",
+```
+
+or directly from `git` using the following reference:
 ```
 "devDependencies": {
     "@aserto/ts-authorizer": "git+https://github.com/aserto-dev/ts-authorizer.git#v0.0.1",
