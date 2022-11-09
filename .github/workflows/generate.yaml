@@ -1,0 +1,82 @@
+name: generate
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      PROTO_REF:
+        description: 'The ref of the proto repo that triggered the dispatch.'
+        required: true
+      OPENAPI_SHA:
+        description: 'The sha of the openapi repo that triggered the dispatch'
+        required: true
+
+env:
+  VAULT_ADDR: https://vault.eng.aserto.com/
+  VAULT_TOKEN:  ${{ secrets.VAULT_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Configuration
+        uses: hashicorp/vault-action@v2.4.3
+        id: vault
+        with:
+          url: ${{ env.VAULT_ADDR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            kv/data/github    "READ_WRITE_TOKEN"    | READ_WRITE_TOKEN;
+            kv/data/github    "SSH_PRIVATE_KEY"     | SSH_PRIVATE_KEY;
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Environment
+        run: |
+            mkdir -p $HOME/.ssh
+            umask 0077 && echo -e "${SSH_PRIVATE_KEY}" > $HOME/.ssh/id_rsa
+            ssh-keyscan github.com >> $HOME/.ssh/known_hosts
+
+            git config --global url."git@github.com:".insteadOf https://github.com/
+            git config --global user.email "github-bot@aserto.com"
+            git config --global user.name "Aserto Bot"
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Generate
+        run: yarn generate
+        env:
+          OPENAPI_SHA: ${{ github.event.inputs.OPENAPI_SHA }}
+      - name: Bump version
+        run: yarn bump
+        env:
+          PROTO_REF: ${{ github.event.inputs.PROTO_REF }}
+
+      - name: Create Pull Request
+        if: github.event_name == 'workflow_dispatch'
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
+          commit-message: Regenerate Type Definitions for pb-authorizer ${{ github.event.inputs.PROTO_REF }}
+          signoff: false
+          branch: b-authorizer/${{ github.event.inputs.PROTO_REF }}
+          delete-branch: true
+          title: 'Auto-Regenerate: ${{ github.event.inputs.PROTO_REF }}'
+          body: |
+            Auto-generated PR to create Type Definitions for pb-authorizer ${{ github.event.inputs.PROTO_REF }}
+            - OPENAPI REF: https://github.com/aserto-dev/openapi-authorizer/blob/${{ github.event.inputs.OPENAPI_SHA }}/publish/authorizer/openapi.json
+            - After merge, run `yarn release`
+          draft: false
