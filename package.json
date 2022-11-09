@@ -1,6 +1,6 @@
 {
   "name": "@aserto/ts-authorizer",
-  "version": "0.20.1.1",
+  "version": "0.20.1-patch",
   "description": "Aserto Authorizer TypeScript type definitions.",
   "types": "index.d.ts",
   "sideEffects": false,
