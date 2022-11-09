@@ -11,6 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/aserto-dev/ts-authorizer.git"
   },
+  "scripts": {
+    "generate": "./scripts/generate.sh",
+    "bump": "./scripts/bump_version.sh",
+    "release": "./scripts/release.sh"
+  },
   "author": "Aserto",
   "license": "Apache-2.0",
   "homepage": "https://github.com/aserto-dev/ts-authorizer#readme",
