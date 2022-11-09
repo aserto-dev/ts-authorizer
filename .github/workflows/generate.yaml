@@ -72,7 +72,7 @@ jobs:
           token: ${{ steps.vault.outputs.READ_WRITE_TOKEN }}
           commit-message: Regenerate Type Definitions for pb-authorizer ${{ github.event.inputs.PROTO_REF }}
           signoff: false
-          branch: b-authorizer/${{ github.event.inputs.PROTO_REF }}
+          branch: pb-authorizer/${{ github.event.inputs.PROTO_REF }}
           delete-branch: true
           title: 'Auto-Regenerate: ${{ github.event.inputs.PROTO_REF }}'
           body: |
