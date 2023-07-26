@@ -58,13 +58,16 @@ export interface components {
       ast?: { [key: string]: unknown };
       id?: string;
       package_path?: string;
+      package_root?: string;
       raw?: string;
     };
     apiPolicyContext: {
       decisions?: string[];
+      path?: string;
+    };
+    apiPolicyInstance: {
       instance_label?: string;
       name?: string;
-      path?: string;
     };
     protobufAny: {
       type_url?: string;
@@ -93,6 +96,7 @@ export interface components {
       input?: string;
       options?: components["schemas"]["v2QueryOptions"];
       policy_context?: components["schemas"]["apiPolicyContext"];
+      policy_instance?: components["schemas"]["apiPolicyInstance"];
       query?: string;
       resource_context?: { [key: string]: unknown };
       unknowns?: string[];
@@ -114,6 +118,7 @@ export interface components {
       identity_context?: components["schemas"]["apiIdentityContext"];
       options?: components["schemas"]["v2DecisionTreeOptions"];
       policy_context?: components["schemas"]["apiPolicyContext"];
+      policy_instance?: components["schemas"]["apiPolicyInstance"];
       resource_context?: { [key: string]: unknown };
     };
     v2DecisionTreeResponse: {
@@ -133,6 +138,7 @@ export interface components {
     v2IsRequest: {
       identity_context?: components["schemas"]["apiIdentityContext"];
       policy_context?: components["schemas"]["apiPolicyContext"];
+      policy_instance?: components["schemas"]["apiPolicyInstance"];
       resource_context?: { [key: string]: unknown };
     };
     v2IsResponse: {
@@ -157,6 +163,7 @@ export interface components {
       input?: string;
       options?: components["schemas"]["v2QueryOptions"];
       policy_context?: components["schemas"]["apiPolicyContext"];
+      policy_instance?: components["schemas"]["apiPolicyInstance"];
       query?: string;
       resource_context?: { [key: string]: unknown };
     };
@@ -287,6 +294,8 @@ export interface operations {
     parameters: {
       query: {
         field_mask?: string;
+        "policy_instance.name"?: string;
+        "policy_instance.instance_label"?: string;
       };
     };
     responses: {
@@ -312,6 +321,8 @@ export interface operations {
       };
       query: {
         field_mask?: string;
+        "policy_instance.name"?: string;
+        "policy_instance.instance_label"?: string;
       };
     };
     responses: {
