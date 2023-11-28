@@ -47,13 +47,15 @@ export interface components {
      *  - IDENTITY_TYPE_NONE: None, no explicit identity context set, equals anonymous.
      *  - IDENTITY_TYPE_SUB: Sub(ject), identity field contains an oAUTH subject.
      *  - IDENTITY_TYPE_JWT: JWT, identity field contains a JWT access token.
+     *  - IDENTITY_TYPE_MANUAL: Manual, propagates thw identity field as-is, without validation, into the input object.
      * @default IDENTITY_TYPE_UNKNOWN
      */
     apiIdentityType:
       | "IDENTITY_TYPE_UNKNOWN"
       | "IDENTITY_TYPE_NONE"
       | "IDENTITY_TYPE_SUB"
-      | "IDENTITY_TYPE_JWT";
+      | "IDENTITY_TYPE_JWT"
+      | "IDENTITY_TYPE_MANUAL";
     apiModule: {
       ast?: { [key: string]: unknown };
       id?: string;
